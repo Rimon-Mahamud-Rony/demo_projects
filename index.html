@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khagrachari Green Tourism | Government Administrative Portal</title>
+    <!-- Google Fonts: Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;450;600;700&family=Inter:wght@400;550;750&display=swap"
+      rel="stylesheet"
+    />
+     <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    
+
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Custom Style overrides for shadows, theme colors & font families -->
+    <style type="text/tailwindcss">
+         #map {
+            height: 700px;
+            width: 100%;
+        }
+
+        .leaflet-popup-content {
+            min-width: 220px;
+        }
+
+      @theme {
+        --font-sans: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+        --font-inter: "Inter", ui-sans-serif, sans-serif;
+        --color-forest: #1f6b4f;
+        --color-forest-dark: #14523b;
+        --color-forest-light: #e7f5ee;
+        --color-earth: #8c5a3c;
+        --color-earth-dark: #6f452c;
+        --color-earth-light: #f7efea;
+        --color-sunset: #f59e0b;
+        --color-sunset-dark: #d97706;
+        --color-sunset-light: #fef3c7;
+      }
+      body {
+        font-family: var(--font-sans);
+        background-color: #f8fafc;
+        color: #1f2937;
+        -webkit-font-smoothing: antialiased;
+      }
+      .shadow-tourism-md {
+        box-shadow:
+          0 12px 24px -4px rgba(31, 107, 79, 0.06),
+          0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      }
+      .shadow-tourism-lg {
+        box-shadow:
+          0 20px 48px -8px rgba(20, 82, 59, 0.1),
+          0 8px 24px -4px rgba(0, 0, 0, 0.04);
+      }
+    </style>
+
+    <style>
+      @font-face {
+        font-family: "solaimanLipi";
+        src: url("solaimanLipi.ttf") format("truetype");
+      }
+
+      .solaimanLipi {
+        font-family: "solaimanLipi";
+        font-weight: 400;
+      }
+
+      @font-face {
+        font-family: "nikosh";
+        src: url("nikosh.ttf") format("truetype");
+      }
+
+      .nikosh {
+        font-family: "nikosh";
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        /* background:#242121e9; */
+        color: white;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .hero-bg {
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.7)), url("https://images.unsplash.com/photo-1506744038136-46273834b3fb");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .floating {
+        animation: float 4s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .swiper-slide {
+        height: auto;
+      }
+    </style>
+
+  </head>
+  <body class="min-h-screen text-neutral-800 antialiased selection:bg-[#E7F5EE] selection:text-[#1F6B4F] ">
+    <!-- 1. TOP SECURED OFFICIAL DESCRIPTOR BANNER -->
+    <div class="bg-[#14523B] text-[#E7F5EE] text-[11px] font-bold py-2.5 px-4 md:px-8 border-b border-white/10 relative z-50">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span class="lang-en font-inter uppercase tracking-wide">
+            Bangladesh Tourism Division &bull; Hill District Administration Cell
+          </span>
+          <span class="lang-bn hidden">বাংলাদেশ পর্যটন বিভাগ &bull; পার্বত্য জেলা প্রশাসন সেল</span>
+        </div>
+        <div class="flex items-center gap-5">
+          <div class="flex items-center gap-1.5 font-inter">
+            <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M3 5a2 2 0 012-2h2.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+              />
+            </svg>
+            <span class="lang-en tracking-wider">
+              Helpline:
+              <b class="text-white">999 / 16263</b>
+            </span>
+            <span class="lang-bn hidden">
+              হেল্পলাইন:
+              <b class="text-white">৯৯৯ / ১৬২৬৩</b>
+            </span>
+          </div>
+          <div class="h-3 w-px bg-white/20 hidden md:block"></div>
+          <button
+            id="header-lang-btn"
+            onclick="toggleLanguage()"
+            class="px-2.5 py-0.5 border border-white/30 rounded-md bg-white/5 hover:bg-white/10 text-[10px] uppercase font-extrabold tracking-widest text-[#E7F5EE] cursor-pointer transition-all"
+          >
+            <span class="lang-toggle-text">বাংলা</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. STICKY DYNAMIC NAVIGATION BAR -->
+    <header
+      id="main-header"
+      class="sticky top-0 z-40 w-full transition-all duration-300 py-4 bg-white/40 backdrop-blur-lg shadow-sm border-b border-neutral-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-3">
+          <div class="w-11 h-11 bg-[#14523B] rounded-xl flex items-center justify-center text-white font-bold text-shadow">
+            <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.727l.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <div class="leading-none">
+            <span id="header-logo-text" class="block font-sans font-bold text-lg text-neutral-900 tracking-tight">KHAGRACHARI</span>
+            <span id="header-logo-sub" class="block text-[10px] font-extrabold text-[#1F6B4F] uppercase tracking-widest">
+              <span class="lang-en">Tourism Guide</span>
+              <span class="lang-bn hidden">সবুজ ইকো ট্যুরিজম</span>
+            </span>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-7">
+          <a href="#about" class="header-link text-sm font-semibold text-neutral-700 hover:text-[#1F6B4F] transition-colors">
+            <span class="lang-en">About</span>
+            <span class="lang-bn hidden">বিস্তারিত</span>
+          </a>
+          <a href="#attractions" class="header-link text-sm font-semibold text-neutral-700 hover:text-[#1F6B4F] transition-colors">
+            <span class="lang-en">Attractions</span>
+            <span class="lang-bn hidden">দর্শনীয় স্থান</span>
+          </a>
+          <a href="#indigenous" class="header-link text-sm font-semibold text-neutral-700 hover:text-[#1F6B4F] transition-colors">
+            <span class="lang-en">Indigenous</span>
+            <span class="lang-bn hidden">সংস্কৃতি</span>
+          </a>
+          <a href="#travel-guide" class="header-link text-sm font-semibold text-neutral-700 hover:text-[#1F6B4F] transition-colors">
+            <span class="lang-en">Travel Guide</span>
+            <span class="lang-bn hidden">নির্দেশিকা</span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="#verification"
+            class="hidden sm:inline-flex items-center gap-1.5 bg-[#1F6B4F] hover:bg-[#14523B] text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition-all text-center"
+          >
+            <svg class="w-4 h-4 shrink-0 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              />
+            </svg>
+            <span class="lang-en">Apply Travel Pass</span>
+            <span class="lang-bn hidden">ভ্রমণ পাসের আবেদন</span>
+          </a>
+
+          <button
+            onclick="toggleMobileMenu()"
+            class="p-2 text-neutral-700 hover:text-neutral-900 md:hidden focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-neutral-100 p-4 absolute top-full left-0 w-full shadow-lg z-30 space-y-3"
+      >
+        <a href="#about" onclick="toggleMobileMenu()" class="block text-sm font-semibold text-neutral-700 py-2 border-b border-neutral-50">
+          <span class="lang-en">About</span>
+          <span class="lang-bn hidden">বিস্তারিত</span>
+        </a>
+        <a
+          href="#attractions"
+          onclick="toggleMobileMenu()"
+          class="block text-sm font-semibold text-neutral-700 py-2 border-b border-neutral-50"
+        >
+          <span class="lang-en">Attractions</span>
+          <span class="lang-bn hidden">দর্শনীয় স্থান</span>
+        </a>
+        <a
+          href="#indigenous"
+          onclick="toggleMobileMenu()"
+          class="block text-sm font-semibold text-neutral-700 py-2 border-b border-neutral-50"
+        >
+          <span class="lang-en">Indigenous</span>
+          <span class="lang-bn hidden">সংস্কৃতি</span>
+        </a>
+        <a
+          href="#travel-guide"
+          onclick="toggleMobileMenu()"
+          class="block text-sm font-semibold text-neutral-700 py-2 border-b border-neutral-50"
+        >
+          <span class="lang-en">Travel Guide</span>
+          <span class="lang-bn hidden">নির্দেশিকা</span>
+        </a>
+        <a href="#verification" onclick="toggleMobileMenu()" class="block text-sm font-bold text-[#1F6B4F] py-2">
+          <span class="lang-en">Apply Travel Pass</span>
+          <span class="lang-bn hidden">ভ্রমণ পাসের আবেদন</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="w-full relative min-h-screen flex items-center overflow-hidden">
+      <!-- Video background -->
+      <video class="absolute top-0 left-0 w-full h-full object-cover" autoplay loop muted playsinline>
+        <source src="https://cdn.pixabay.com/video/2025/10/02/307487_large.mp4" type="video/mp4" />
+         <!-- <source src="my_music.mp4" type="video/mp4" /> -->
+      </video>
+
+      <!-- Dark overlay -->
+      <div class="absolute inset-0 bg-black/40"></div>
+
+      <!-- Content -->
+      <div class="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-6 items-center">
+        <div class="solaimanLipi">
+          <span class="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm">
+            যেখানে মেঘ ছুঁয়ে যায় পাহাড়কে, আর প্রকৃতি লেখে বাংলার সবচেয়ে সুন্দর কবিতা
+          </span>
+
+          <h1 class="text-2xl sm:text-5xl font-font-thin  mt-6 leading-tight">
+            প্রাকৃতিক সৌন্দর্য উপভোগ করুন
+            <span class="text-emerald-400 font-thin">খাগড়াছড়িতে</span>
+          </h1>
+
+          <p class="mt-6 text-gray-300 text-sm">
+            এখানে ভোরের কুয়াশা পাহাড়ের কাঁধে সাদা শাল জড়িয়ে দেয়, ঝরনার সুর মিশে যায় বনভূমির নীরবতায়, আর মেঘেরা নেমে আসে মানুষের খুব কাছে। খাগড়াছড়ির প্রতিটি পথ, প্রতিটি পাহাড়, প্রতিটি নদী যেন বাংলার মাটির লেখা এক একটি প্রেমের কবিতা, যা ভ্রমণপিপাসু হৃদয়কে ডেকে নিয়ে যায় সৌন্দর্যের এক অনন্ত অভিযাত্রায়.......
+          </p>
+
+          <div class="flex gap-4 mt-8">
+            <button class="bg-emerald-500 px-6 py-3 rounded-xl">Explore Tours</button>
+            <button class="glass px-6 py-3 rounded-xl">Watch Video</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-5">
+          <div class="glass p-6 rounded-3xl floating">
+            <h3 class="text-2xl sm:text-3xl font-bold">25K+</h3>
+            <p>Visitors</p>
+          </div>
+          <div class="glass p-6 rounded-3xl floating">
+            <h3 class="text-2xl sm:text-3xl font-bold">10</h3>
+            <p>Tourist Spots</p>
+          </div>
+          <div class="glass p-6 rounded-3xl floating">
+            <h3 class="text-2xl sm:text-3xl font-bold">4.9</h3>
+            <p>Rating</p>
+          </div>
+          <div class="glass p-6 rounded-3xl floating">
+            <h3 class="text-2xl sm:text-3xl font-bold">50+</h3>
+            <p>Packages</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     <section id="" class="py-16 md:py-20 bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="text-[11.5px] font-extrabold text-[#1F6B4F] uppercase tracking-widest block font-inter">
+            🏛️ Sustainable Administrative Eco-Tourism
+          </span>
+          <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 tracking-tight font-sans">
+            <span class="lang-en">Why Travel To Khagrachari?</span>
+            <span class="lang-bn hidden">কেন ভ্রমণ করবেন আমাদের জেলায়?</span>
+          </h2>
+          <p class="text-sm md:text-base text-neutral-600 leading-relaxed font-inter">
+            <span class="lang-en">
+              Khagrachari Mountain District is a pristine destination under careful regulatory protection to offer green organic trails,
+              pure mountain breeze, and safe scenic exploration.
+            </span>
+            <span class="lang-bn hidden">
+              পরিবেশের ভারসাম্য রক্ষা করে পর্যটকদের জন্য নিরাপদ পাহাড়ি ট্রেইল, মেঘের মিতালি দেখার চোখ জুড়ানো স্পট এবং অনন্য উপজাতীয় ঐতিহ্যের
+              সন্ধান দিতে আমরা প্রতিশ্রুতিবদ্ধ।
+            </span>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+
+    <!-- Card 1 -->
+    <div
+        class="group cursor-pointer bg-white rounded-2xl border-2 border-cyan-200 p-4 min-h-[260px] flex flex-col text-center shadow-md shadow-cyan-100/80 hover:shadow-xl hover:shadow-cyan-200/60 hover:-translate-y-1 transition-all duration-300">
+
+        <div
+            class="mx-auto mb-3 w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.727l.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+
+        <h4 class="font-bold text-base text-gray-800">
+            <span class="lang-en">Epic Ridge Balconies</span>
+            <span class="lang-bn hidden">সমুদ্রসম মেঘের ভ্যালি</span>
+        </h4>
+
+        <p class="mt-2 text-sm text-gray-600 leading-relaxed">
+            <span class="lang-en">
+                Witness sea-clouds passing through wood cottages on majestic Sajek Helipad crests.
+            </span>
+            <span class="lang-bn hidden">
+                সাজেক ভ্যালির কাঠের কটেজে বসেই ছুয়ে দিন ছুটাছুটি করা শুভ্র সাদা মেঘের ভেলা।
+            </span>
+        </p>
+
+        <div class="mt-auto pt-4">
+            <span
+                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-semibold group-hover:bg-cyan-100 transition">
+                Explore More
+                <svg class="w-3.5 h-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M9 5l7 7-7 7" />
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div
+        class="group cursor-pointer bg-white rounded-2xl border-2 border-cyan-200 p-4 min-h-[260px] flex flex-col text-center shadow-md shadow-cyan-100/80 hover:shadow-xl hover:shadow-cyan-200/60 hover:-translate-y-1 transition-all duration-300">
+
+        <div
+            class="mx-auto mb-3 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </div>
+
+        <h4 class="font-bold text-base text-gray-800">
+            <span class="lang-en">Mystic Grotto Trails</span>
+            <span class="lang-bn hidden">রহস্যময় আলুটিলা গুহা</span>
+        </h4>
+
+        <p class="mt-2 text-sm text-gray-600 leading-relaxed">
+            <span class="lang-en">
+                Walk safely through chilly streams beneath massive cave stones.
+            </span>
+            <span class="lang-bn hidden">
+                পাহাড়ি মশাল জ্বালিয়ে শীতল প্রবাহমান ঝরনার বুক চিরে হেঁটে চলুন রহস্যময় সুড়ঙ্গে।
+            </span>
+        </p>
+
+        <div class="mt-auto pt-4">
+            <span
+                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-semibold group-hover:bg-cyan-100 transition">
+                Explore More
+                <svg class="w-3.5 h-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M9 5l7 7-7 7" />
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div
+        class="group cursor-pointer bg-white rounded-2xl border-2 border-cyan-200 p-4 min-h-[260px] flex flex-col text-center shadow-md shadow-cyan-100/80 hover:shadow-xl hover:shadow-cyan-200/60 hover:-translate-y-1 transition-all duration-300">
+
+        <div
+            class="mx-auto mb-3 w-12 h-12 rounded-xl bg-gradient-to-br from-violet-100 to-violet-200 text-violet-700 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M12 14c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5zM12 12a4 4 0 100-8 4 4 0 000 8z" />
+            </svg>
+        </div>
+
+        <h4 class="font-bold text-base text-gray-800">
+            <span class="lang-en">Indigenous Harmony</span>
+            <span class="lang-bn hidden">পাহাড়ি সংস্কৃতির বৈচিত্র্য</span>
+        </h4>
+
+        <p class="mt-2 text-sm text-gray-600 leading-relaxed">
+            <span class="lang-en">
+                Experience traditions, festivals, and cuisine of indigenous communities.
+            </span>
+            <span class="lang-bn hidden">
+                বৈচিত্র্যময় উপজাতীয় ঐতিহ্য, লোকনৃত্য ও মনমাতানো ব্যাম্বু চিকেনের স্বাদ নিন।
+            </span>
+        </p>
+
+        <div class="mt-auto pt-4">
+            <span
+                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-semibold group-hover:bg-cyan-100 transition">
+                Explore More
+                <svg class="w-3.5 h-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M9 5l7 7-7 7" />
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div
+        class="group cursor-pointer bg-white rounded-2xl border-2 border-cyan-200 p-4 min-h-[260px] flex flex-col text-center shadow-md shadow-cyan-100/80 hover:shadow-xl hover:shadow-cyan-200/60 hover:-translate-y-1 transition-all duration-300">
+
+        <div
+            class="mx-auto mb-3 w-12 h-12 rounded-xl bg-gradient-to-br from-rose-100 to-rose-200 text-rose-700 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </div>
+
+        <h4 class="font-bold text-base text-gray-800">
+            <span class="lang-en">Thrill Waterslides</span>
+            <span class="lang-bn hidden">প্রাকৃতিক জলপ্রপাত</span>
+        </h4>
+
+        <p class="mt-2 text-sm text-gray-600 leading-relaxed">
+            <span class="lang-en">
+                Experience thrilling natural water slides and cascading waterfalls.
+            </span>
+            <span class="lang-bn hidden">
+                ঝরনার শীতল প্রবাহমান পাথুরে শয্যা বেয়ে গড়িয়ে নামার রোমাঞ্চকর অভিজ্ঞতা।
+            </span>
+        </p>
+
+        <div class="mt-auto pt-4">
+            <span
+                class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-semibold group-hover:bg-cyan-100 transition">
+                Explore More
+                <svg class="w-3.5 h-3.5 transition group-hover:translate-x-1" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M9 5l7 7-7 7" />
+                </svg>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+        <!-- Header -->
+        <!-- <div class="mb-6">
+            <h1 class="text-4xl font-bold text-slate-800">
+                🏔️ Khagrachari Tourist Map
+            </h1>
+
+            <p class="text-slate-600 mt-2">
+                Explore popular tourist destinations in Khagrachari and Sajek Valley.
+            </p>
+        </div> -->
+
+        <!-- Tourist Count -->
+        <!-- <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+            <h2 class="text-xl font-semibold text-slate-700">
+                Total Tourist Spots:
+                <span id="spotCount" class="text-blue-600"></span>
+            </h2>
+        </div> -->
+
+        <!-- Map -->
+        <!-- <div class="bg-white rounded-2xl shadow-xl overflow-hidden w-full">
+
+            <div id="map" class=""></div>
+        </div> -->
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+    <div class="grid grid-cols-1 lg:grid-cols-4">
+
+        <!-- Left Content -->
+        <div class="p-5 lg:p-6 flex flex-col justify-center">
+
+            <span
+                class="inline-flex items-center w-fit px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                🗺️ Interactive Guide
+            </span>
+
+            <h2 class="mt-3 text-xl lg:text-2xl font-bold text-gray-800">
+                Explore Khagrachari
+            </h2>
+
+            <p class="mt-3 text-sm text-gray-600 leading-relaxed">
+                Discover breathtaking hills, waterfalls, lakes, and cultural
+                landmarks through our interactive tourist map. Click on any
+                destination to learn more and plan your perfect journey.
+            </p>
+
+            <div class="flex gap-6 mt-5">
+
+                <div>
+                    <p class="text-lg font-bold text-green-600">10+</p>
+                    <p class="text-xs text-gray-500">
+                        Tourist Spots
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-lg font-bold text-green-600">5+</p>
+                    <p class="text-xs text-gray-500">
+                        Waterfalls
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-lg font-bold text-green-600">24/7</p>
+                    <p class="text-xs text-gray-500">
+                        Explore
+                    </p>
+                </div>
+
+            </div>
+
+            <button
+                class="mt-5 w-fit px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition">
+                Start Exploring
+            </button>
+
+        </div>
+
+        <!-- Map -->
+        <div class="lg:col-span-3 h-72 sm:h-80 md:h-96 lg:h-[500px]">
+            <div id="map" class="w-full h-full"></div>
+        </div>
+
+    </div>
+
+</div>
+
+    </div>
+     </section>
+</body>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+
+        const touristSpots = [
+            {
+                name: "Sajek Valley",
+                lat: 23.3814,
+                lng: 92.2933,
+                description: "The most popular tourist destination in Khagrachari.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Alutila Cave",
+                lat: 23.0917,
+                lng: 91.9733,
+                description: "A famous natural cave.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Alutila Tourist Center",
+                lat: 23.0895,
+                lng: 91.9755,
+                description: "Scenic viewpoint and tourist attraction.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Richang Waterfall",
+                lat: 23.0833,
+                lng: 91.9833,
+                description: "Beautiful natural waterfall.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Hajachora Waterfall",
+                lat: 23.1610,
+                lng: 91.9870,
+                description: "One of the most beautiful waterfalls in Bangladesh.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Tareng",
+                lat: 23.2200,
+                lng: 92.0800,
+                description: "A hilltop destination with stunning views.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Konglak Hill",
+                lat: 23.3895,
+                lng: 92.3020,
+                description: "Highest point in Sajek Valley.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Sajek Helipad",
+                lat: 23.3850,
+                lng: 92.2950,
+                description: "Best place to enjoy sunrise and sunset.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Dighinala Hanging Bridge",
+                lat: 23.2700,
+                lng: 91.9600,
+                description: "A beautiful bridge surrounded by hills.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Nunchari Devota Pond",
+                lat: 23.1300,
+                lng: 92.0200,
+                description: "A sacred pond with cultural significance.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Mayabini Lake",
+                lat: 23.1200,
+                lng: 91.9500,
+                description: "A calm and scenic lake.",
+                url: "https://example.com/alutila"
+            },
+            {
+                name: "Khagrachari Town Park",
+                lat: 23.1190,
+                lng: 91.9855,
+                description: "Popular recreation spot in Khagrachari town.",
+                url: "https://example.com/alutila"
+            }
+        ];
+
+        // document.getElementById("spotCount").innerText =
+        //     touristSpots.length;
+
+        // Initialize map
+        const map = L.map('map');
+
+        // OpenStreetMap Layer
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                attribution:
+                    '&copy; OpenStreetMap contributors'
+            }
+        ).addTo(map);
+
+        // Marker Group
+        const group = L.featureGroup();
+
+        touristSpots.forEach(spot => {
+
+            const marker = L.marker([
+                spot.lat,
+                spot.lng
+            ]).bindPopup(`
+    <div class="p-2">
+        <h3 style="font-size:18px;font-weight:bold;">
+            ${spot.name}
+        </h3>
+
+        <p style="margin-top:8px;">
+            ${spot.description}
+        </p>
+
+        <p style="margin-top:10px;color:#64748b;">
+            Latitude: ${spot.lat}
+        </p>
+
+        <p style="color:#64748b;">
+            Longitude: ${spot.lng}
+        </p>
+
+        <a
+            href="${spot.url || '#'}"
+            target="_blank"
+            class="w-full text-center inline-block mt-3 px-4 py-2 text-sm bg-green-500 hover:bg-green-600 rounded"
+            style="color:white"
+        >
+            Explore the place
+        </a>
+
+        <a
+    href="https://www.google.com/maps?q=${spot.lat},${spot.lng}"
+    target="_blank"
+    class="inline-block mt-3 px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
+>
+    Open in Google Maps
+</a>
+    </div>
+`)
+
+            marker.addTo(map);
+            group.addLayer(marker);
+        });
+
+        // Auto fit all markers
+        map.fitBounds(group.getBounds(), {
+            padding: [50, 50]
+        });
+
+</script>
+</html>
