@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>খাগড়াছড়ি ভূমি রেজিস্ট্রেশন সিস্টেম</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  // Tailwind config only — no custom CSS, this just maps font-sans / font-mono
+  // to the Bangla/UI fonts loaded above so the rest of the file can use plain
+  // Tailwind utility classes like font-sans and font-mono.
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Hind Siliguri', 'Inter', 'ui-sans-serif', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="font-sans antialiased min-h-screen bg-white text-slate-900">
+
+<!-- ============ HOME VIEW ============ -->
+<section id="view-home" class="block">
+  <header class="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-cyan-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 shadow-lg shadow-cyan-500/30 flex items-center justify-center text-white font-bold font-sans">খ</div>
+        <div>
+          <p class="font-semibold text-sm leading-tight">খাগড়াছড়ি ভূমি রেজিস্ট্রেশন</p>
+          <p class="text-[11px] text-slate-400">Land Registry · Digital Ledger</p>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="showView('auth'); setAuthTab('login')" class="bg-white border border-cyan-400 text-slate-700 hover:border-cyan-400 hover:text-cyan-600 hover:bg-cyan-50 transition-colors duration-150 text-sm font-medium px-4 py-2 rounded-0">লগইন</button>
+        <button onclick="showView('auth'); setAuthTab('register')" class="bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 text-sm font-medium px-4 py-2 rounded-0">নিবন্ধন করুন</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="relative overflow-hidden">
+    <div class="absolute w-72 h-72 -top-10 -left-16 bg-cyan-400 opacity-30 blur-3xl rounded-full"></div>
+    <div class="absolute w-72 h-72 top-20 -right-10 bg-emerald-400 opacity-30 blur-3xl rounded-full"></div>
+    <div class="max-w-6xl mx-auto px-4 py-14 sm:py-20 relative z-10 grid sm:grid-cols-5 gap-10 items-center">
+      <div class="sm:col-span-3">
+        <span class="inline-block bg-cyan-50 text-cyan-700 border border-cyan-100 text-xs font-medium px-3 py-1 rounded-full mb-4">ডিজিটাল দলিল ব্যবস্থাপনা</span>
+        <h1 class="text-3xl sm:text-5xl font-bold leading-tight">
+          জমির দলিল এখন <span class="bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text text-transparent">এক জায়গায়</span>, নিরাপদ ও দ্রুত অনুসন্ধানযোগ্য
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-slate-500">খাগড়াছড়ি জেলার ৯টি উপজেলার বিক্রয়, হেবা, বণ্টননামাসহ সকল দলিল একটি ডিজিটাল সিস্টেমে লিপিবদ্ধ করুন এবং মুহূর্তেই খুঁজে বের করুন।</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <button onclick="showView('auth'); setAuthTab('register')" class="bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 px-6 py-3.5 rounded-xl font-medium">নতুন নিবন্ধন শুরু করুন</button>
+          <button onclick="showView('auth'); setAuthTab('login')" class="bg-white border border-slate-200 text-slate-700 hover:border-cyan-400 hover:text-cyan-600 hover:bg-cyan-50 transition-colors duration-150 px-6 py-3.5 rounded-xl font-medium">বিদ্যমান একাউন্টে প্রবেশ</button>
+        </div>
+        <div class="mt-10 grid grid-cols-3 gap-4 max-w-md">
+          <div class="bg-white border border-slate-200 rounded-2xl p-3.5 text-center">
+            <p class="font-mono text-xl font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text text-transparent">৯</p>
+            <p class="text-[11px] mt-0.5 text-slate-400">উপজেলা</p>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-3.5 text-center">
+            <p class="font-mono text-xl font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text text-transparent">৮</p>
+            <p class="text-[11px] mt-0.5 text-slate-400">দলিলের ধরন</p>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-3.5 text-center">
+            <p class="font-mono text-xl font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text text-transparent">১২</p>
+            <p class="text-[11px] mt-0.5 text-slate-400">তথ্য ক্ষেত্র</p>
+          </div>
+        </div>
+      </div>
+      <div class="sm:col-span-2">
+        <div class="bg-white border border-slate-200 shadow-sm rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <p class="font-semibold text-sm">সাম্প্রতিক লিপিবদ্ধকরণ</p>
+            <span class="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500"></span>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-sm px-3 py-2.5 rounded-xl border border-slate-100 hover:bg-cyan-50/50 transition-colors">
+              <span class="font-mono text-xs text-cyan-600">KH-2026-0142</span>
+              <span class="text-xs text-slate-500">বিক্রয় দলিল · মাটিরাঙ্গা</span>
+            </div>
+            <div class="flex justify-between items-center text-sm px-3 py-2.5 rounded-xl border border-slate-100 hover:bg-cyan-50/50 transition-colors">
+              <span class="font-mono text-xs text-cyan-600">KH-2026-0141</span>
+              <span class="text-xs text-slate-500">বণ্টননামা · দীঘিনালা</span>
+            </div>
+            <div class="flex justify-between items-center text-sm px-3 py-2.5 rounded-xl border border-slate-100 hover:bg-cyan-50/50 transition-colors">
+              <span class="font-mono text-xs text-cyan-600">KH-2026-0140</span>
+              <span class="text-xs text-slate-500">হেবা দলিল · রামগড়</span>
+            </div>
+          </div>
+          <p class="text-xs mt-4 text-slate-400">প্রবেশের পর সম্পূর্ণ তালিকা ও অনুসন্ধান সুবিধা পাবেন।</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUTH VIEW ============ -->
+<section id="view-auth" class="hidden">
+  <header class="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-cyan-100">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button onclick="showView('home')" class="px-4 py-2 rounded-full text-sm font-medium text-slate-500 hover:bg-cyan-50 hover:text-cyan-600 transition-colors flex items-center gap-1">
+        <span aria-hidden="true">←</span> হোমপেজ
+      </button>
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-500 shadow-lg shadow-cyan-500/30 flex items-center justify-center text-white text-sm font-bold">খ</div>
+    </div>
+  </header>
+
+  <div class="relative overflow-hidden">
+    <div class="absolute w-72 h-72 top-0 left-1/3 bg-cyan-400 opacity-30 blur-3xl rounded-full"></div>
+    <div class="max-w-md mx-auto px-4 py-12 relative z-10">
+      <div class="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
+        <div class="flex border-b border-cyan-100">
+          <button id="tab-login" onclick="setAuthTab('login')" class="flex-1 py-3.5 text-sm font-semibold border-b-2 transition-colors duration-150 text-cyan-600 border-cyan-500">লগইন</button>
+          <button id="tab-register" onclick="setAuthTab('register')" class="flex-1 py-3.5 text-sm font-semibold border-b-2 transition-colors duration-150 text-slate-400 border-transparent">নিবন্ধন</button>
+        </div>
+
+        <!-- Login form -->
+        <form id="form-login" class="p-6 space-y-4" onsubmit="event.preventDefault(); showView('dashboard');">
+          <div>
+            <label class="text-sm font-medium block mb-1.5">ব্যবহারকারী আইডি / মোবাইল নম্বর</label>
+            <input type="text" required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="যেমন: 01XXXXXXXXX">
+          </div>
+          <div>
+            <label class="text-sm font-medium block mb-1.5">পাসওয়ার্ড</label>
+            <input type="password" required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="পাসওয়ার্ড দিন">
+          </div>
+          <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 rounded-xl py-3 font-medium">প্রবেশ করুন</button>
+          <p class="text-xs text-center text-slate-400">অ্যাকাউন্ট নেই? <button type="button" onclick="setAuthTab('register')" class="font-medium text-cyan-600">নিবন্ধন করুন</button></p>
+        </form>
+
+        <!-- Registration form -->
+        <form id="form-register" class="p-6 space-y-4 hidden" onsubmit="event.preventDefault(); showView('dashboard');">
+          <div>
+            <label class="text-sm font-medium block mb-1.5">পূর্ণ নাম</label>
+            <input type="text" required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="আপনার নাম লিখুন">
+          </div>
+          <div>
+            <label class="text-sm font-medium block mb-1.5">মোবাইল নম্বর</label>
+            <input type="tel" required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="01XXXXXXXXX">
+          </div>
+          <div>
+            <label class="text-sm font-medium block mb-1.5">পদবি / দপ্তর</label>
+            <select class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow">
+              <option>সাব-রেজিস্ট্রার অফিস</option>
+              <option>উপজেলা ভূমি অফিস</option>
+              <option>জেলা প্রশাসক কার্যালয়</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-medium block mb-1.5">পাসওয়ার্ড নির্ধারণ করুন</label>
+            <input type="password" required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="নূন্যতম ৮ অক্ষর">
+          </div>
+          <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 rounded-xl py-3 font-medium">নিবন্ধন সম্পন্ন করুন</button>
+          <p class="text-xs text-center text-slate-400">ইতিমধ্যে অ্যাকাউন্ট আছে? <button type="button" onclick="setAuthTab('login')" class="font-medium text-cyan-600">লগইন করুন</button></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD VIEW (categories) ============ -->
+<section id="view-dashboard" class="hidden">
+  <header class="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-cyan-100">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-500 shadow-lg shadow-cyan-500/30 flex items-center justify-center text-white text-sm font-bold">খ</div>
+        <p class="font-semibold text-sm">খা.ভূ. রেজিস্ট্রেশন</p>
+      </div>
+      <div class="flex items-center gap-1">
+        <button onclick="showView('table')" class="px-4 py-2 rounded-full text-sm font-medium text-slate-500 hover:bg-cyan-50 hover:text-cyan-600 transition-colors">তালিকা</button>
+        <button onclick="showView('home')" class="px-4 py-2 rounded-full text-sm font-medium text-slate-500 hover:bg-cyan-50 hover:text-cyan-600 transition-colors">লগআউট</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="mb-7">
+      <h2 class="text-2xl font-bold">দলিলের ধরন নির্বাচন করুন</h2>
+      <p class="text-sm mt-1.5 text-slate-500">যে ধরনের দলিল লিপিবদ্ধ করতে চান তা বেছে নিন, অথবা সব দলিল একসাথে দেখুন।</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mb-8">
+      <button onclick="openForm('বিক্রয় দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">📜</div>
+        <p class="font-semibold text-sm">বিক্রয় দলিল</p>
+        <p class="text-[11px] text-slate-400">Sale Deed</p>
+      </button>
+      <button onclick="openForm('হেবা দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">🤝</div>
+        <p class="font-semibold text-sm">হেবা দলিল</p>
+        <p class="text-[11px] text-slate-400">Gift Deed</p>
+      </button>
+      <button onclick="openForm('বণ্টননামা দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">⚖️</div>
+        <p class="font-semibold text-sm">বণ্টননামা দলিল</p>
+        <p class="text-[11px] text-slate-400">Partition Deed</p>
+      </button>
+      <button onclick="openForm('বন্ধকী দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">🏦</div>
+        <p class="font-semibold text-sm">বন্ধকী দলিল</p>
+        <p class="text-[11px] text-slate-400">Mortgage Deed</p>
+      </button>
+      <button onclick="openForm('লিজ দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">🗝️</div>
+        <p class="font-semibold text-sm">লিজ দলিল</p>
+        <p class="text-[11px] text-slate-400">Lease Deed</p>
+      </button>
+      <button onclick="openForm('উইল দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">🖋️</div>
+        <p class="font-semibold text-sm">উইল দলিল</p>
+        <p class="text-[11px] text-slate-400">Will Deed</p>
+      </button>
+      <button onclick="openForm('আমমোক্তারনামা')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">📋</div>
+        <p class="font-semibold text-sm">আমমোক্তারনামা</p>
+        <p class="text-[11px] text-slate-400">Power of Attorney</p>
+      </button>
+      <button onclick="openForm('বিনিময় দলিল')" class="bg-white border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-2xl p-4 text-left">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 flex items-center justify-center text-xl mb-3">🔄</div>
+        <p class="font-semibold text-sm">বিনিময় দলিল</p>
+        <p class="text-[11px] text-slate-400">Exchange Deed</p>
+      </button>
+    </div>
+
+    <button onclick="showView('table')" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 hover:border-cyan-400 hover:text-cyan-600 hover:bg-cyan-50 transition-colors duration-150 rounded-xl px-6 py-3.5 font-medium">সকল দলিলের তালিকা দেখুন →</button>
+  </div>
+</section>
+
+<!-- ============ FORM VIEW (submission, 12 fields) ============ -->
+<section id="view-form" class="hidden">
+  <header class="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button onclick="showView('dashboard')" class="px-4 py-2 rounded-full text-sm font-medium text-slate-500 hover:bg-cyan-50 hover:text-cyan-600 transition-colors flex items-center gap-1">
+        <span aria-hidden="true">←</span> ধরন নির্বাচনে ফিরুন
+      </button>
+      <button onclick="showView('table')" class="px-4 py-2 rounded-full text-sm font-medium text-slate-500 hover:bg-cyan-50 hover:text-cyan-600 transition-colors">তালিকা দেখুন</button>
+    </div>
+  </header>
+
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <span class="inline-block bg-cyan-50 text-cyan-700 border border-cyan-100 text-xs font-medium px-3 py-1 rounded-full mb-3">নতুন দলিল লিপিবদ্ধকরণ</span>
+    <h2 id="form-title" class="text-2xl font-bold mb-6">বিক্রয় দলিল</h2>
+
+    <form class="bg-white border border-slate-200 shadow-sm rounded-2xl p-5 sm:p-7 grid sm:grid-cols-2 gap-4" onsubmit="submitDeed(event)">
+      <div>
+        <label class="text-sm font-medium block mb-1.5">১. দলিল নম্বর</label>
+        <input required class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="KH-2026-0001" id="f-deedno">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">২. দলিলের ধরন</label>
+        <select class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" id="f-type">
+          <option>বিক্রয় দলিল</option><option>হেবা দলিল</option><option>বণ্টননামা দলিল</option>
+          <option>বন্ধকী দলিল</option><option>লিজ দলিল</option><option>উইল দলিল</option>
+          <option>আমমোক্তারনামা</option><option>বিনিময় দলিল</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৩. উপজেলা</label>
+        <select required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" id="f-upazila">
+          <option value="">নির্বাচন করুন</option>
+          <option>খাগড়াছড়ি সদর</option><option>দীঘিনালা</option><option>পানছড়ি</option>
+          <option>লক্ষ্মীছড়ি</option><option>মহালছড়ি</option><option>মানিকছড়ি</option>
+          <option>মাটিরাঙ্গা</option><option>রামগড়</option><option>গুইমারা</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৪. মৌজার নাম</label>
+        <input class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="মৌজার নাম লিখুন" id="f-mouza">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৫. জে.এল নম্বর</label>
+        <input class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="J.L. No" id="f-jl">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৬. দাগ নম্বর</label>
+        <input class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="দাগ নং" id="f-dag">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৭. খতিয়ান নম্বর</label>
+        <input class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="খতিয়ান নং" id="f-khatian">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৮. জমির পরিমাণ</label>
+        <div class="flex gap-2">
+          <input class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="০.০০" id="f-area">
+          <select class="rounded-xl px-2 py-2.5 text-sm w-24 border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" id="f-unit"><option>শতক</option><option>একর</option><option>কাণী</option></select>
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">৯. দাতার নাম</label>
+        <input required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="দাতার পূর্ণ নাম" id="f-donor">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">১০. গ্রহীতার নাম</label>
+        <input required class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="গ্রহীতার পূর্ণ নাম" id="f-grantee">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">১১. দলিল মূল্য (৳)</label>
+        <input class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="০" id="f-value">
+      </div>
+      <div>
+        <label class="text-sm font-medium block mb-1.5">১২. রেজিস্ট্রেশনের তারিখ</label>
+        <input type="date" class="w-full rounded-xl px-3.5 py-2.5 text-sm font-mono border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" id="f-date">
+      </div>
+      <div class="sm:col-span-2">
+        <label class="text-sm font-medium block mb-1.5">মন্তব্য / ঠিকানা (ঐচ্ছিক)</label>
+        <textarea class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" rows="2" placeholder="অতিরিক্ত তথ্য" id="f-note"></textarea>
+      </div>
+
+      <div class="sm:col-span-2 flex flex-col sm:flex-row gap-3 pt-2">
+        <button type="submit" class="flex-1 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 rounded-xl px-5 py-3.5 font-medium">দলিল সংরক্ষণ করুন</button>
+       <button
+    type="button"
+    onclick="showView('dashboard')"
+    class="rounded-xl border border-red-400 bg-gradient-to-r from-red-100 to-red-200 px-5 py-3.5 font-medium text-slate-700 shadow-lg shadow-red-500/30 transition-all duration-200 hover:border-red-700 hover:from-red-700 hover:to-red-700 hover:text-white"
+>
+    বাতিল করুন
+</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ TABLE VIEW (records + search) ============ -->
+<section id="view-table" class="hidden">
+  <header class="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button onclick="showView('dashboard')" class="px-4 py-2 rounded-full text-sm font-medium text-slate-500 hover:bg-cyan-50 hover:text-cyan-600 transition-colors flex items-center gap-1">
+        <span aria-hidden="true">←</span> ড্যাশবোর্ড
+      </button>
+      <button onclick="openForm('বিক্রয় দলিল')" class="bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 text-sm font-medium px-4 py-2 rounded-full">+ নতুন দলিল</button>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-5">সকল লিপিবদ্ধ দলিল</h2>
+
+    <!-- Search & filters -->
+    <div class="bg-white border border-slate-200 shadow-sm rounded-2xl p-4 mb-5 grid sm:grid-cols-4 gap-3">
+      <div class="sm:col-span-2">
+        <label class="text-xs font-medium block mb-1.5 text-slate-500">অনুসন্ধান</label>
+        <input id="search-box" oninput="filterTable()" class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow" placeholder="দলিল নং, নাম, মৌজা দিয়ে খুঁজুন...">
+      </div>
+      <div>
+        <label class="text-xs font-medium block mb-1.5 text-slate-500">উপজেলা</label>
+        <select id="filter-upazila" onchange="filterTable()" class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow">
+          <option value="">সকল উপজেলা</option>
+          <option>খাগড়াছড়ি সদর</option><option>দীঘিনালা</option><option>পানছড়ি</option>
+          <option>লক্ষ্মীছড়ি</option><option>মহালছড়ি</option><option>মানিকছড়ি</option>
+          <option>মাটিরাঙ্গা</option><option>রামগড়</option><option>গুইমারা</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs font-medium block mb-1.5 text-slate-500">দলিলের ধরন</label>
+        <select id="filter-type" onchange="filterTable()" class="w-full rounded-xl px-3.5 py-2.5 text-sm border border-slate-200 focus:outline-none focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 transition-shadow">
+          <option value="">সকল ধরন</option>
+          <option>বিক্রয় দলিল</option><option>হেবা দলিল</option><option>বণ্টননামা দলিল</option>
+          <option>বন্ধকী দলিল</option><option>লিজ দলিল</option><option>উইল দলিল</option>
+          <option>আমমোক্তারনামা</option><option>বিনিময় দলিল</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Desktop / tablet table -->
+    <div class="hidden md:block bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left bg-cyan-50/60">
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">দলিল নং</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">ধরন</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">উপজেলা</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">দাতা</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">গ্রহীতা</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">পরিমাণ</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-slate-500">তারিখ</th>
+              <th class="px-4 py-3.5 font-semibold text-xs uppercase tracking-wide text-right text-slate-500">অ্যাকশন</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile card list -->
+    <div id="card-list" class="md:hidden space-y-3"></div>
+
+    <p id="empty-state" class="hidden text-center py-12 text-sm text-slate-400">কোনো দলিল পাওয়া যায়নি। অনুসন্ধানের শব্দ পরিবর্তন করে আবার চেষ্টা করুন।</p>
+  </div>
+</section>
+
+<script>
+  let records = [
+    {id:'KH-2026-0142', type:'বিক্রয় দলিল', upazila:'মাটিরাঙ্গা', mouza:'তবলছড়ি', donor:'মো. কামাল উদ্দিন', grantee:'রফিকুল ইসলাম', area:'৫০ শতক', value:'৳ ৩,৫০,০০০', date:'২৮-০৬-২০২৬'},
+    {id:'KH-2026-0141', type:'বণ্টননামা দলিল', upazila:'দীঘিনালা', mouza:'বোয়ালখালী', donor:'সুনীল ত্রিপুরা', grantee:'বিমল ত্রিপুরা', area:'১.২ একর', value:'৳ —', date:'২৫-০৬-২০২৬'},
+    {id:'KH-2026-0140', type:'হেবা দলিল', upazila:'রামগড়', mouza:'পাতাছড়া', donor:'নাসিমা বেগম', grantee:'ফাতেমা বেগম', area:'৩০ শতক', value:'৳ —', date:'২২-০৬-২০২৬'},
+    {id:'KH-2026-0139', type:'বন্ধকী দলিল', upazila:'পানছড়ি', mouza:'লোগাং', donor:'উজ্জ্বল চাকমা', grantee:'সোনালী ব্যাংক', area:'৭৫ শতক', value:'৳ ৮,০০,০০০', date:'১৮-০৬-২০২৬'},
+    {id:'KH-2026-0138', type:'লিজ দলিল', upazila:'খাগড়াছড়ি সদর', mouza:'কমলছড়ি', donor:'জেলা প্রশাসক কার্যালয়', grantee:'পার্বত্য পর্যটন কর্পোরেশন', area:'২ একর', value:'৳ ১,২০,০০০ (বার্ষিক)', date:'১০-০৬-২০২৬'},
+    {id:'KH-2026-0137', type:'বিক্রয় দলিল', upazila:'মানিকছড়ি', mouza:'যোগ্যাছোলা', donor:'আব্দুল করিম', grantee:'সেলিনা আক্তার', area:'৪০ শতক', value:'৳ ২,৮০,০০০', date:'০৫-০৬-২০২৬'},
+    {id:'KH-2026-0136', type:'উইল দলিল', upazila:'লক্ষ্মীছড়ি', mouza:'বর্মাছড়ি', donor:'যোগেন্দ্র লাল ত্রিপুরা', grantee:'অনিল ত্রিপুরা', area:'৯০ শতক', value:'৳ —', date:'৩০-০৫-২০২৬'},
+    {id:'KH-2026-0135', type:'আমমোক্তারনামা', upazila:'গুইমারা', mouza:'হাফছড়ি', donor:'দিলীপ কুমার দাশ', grantee:'বিপ্লব কুমার দাশ', area:'—', value:'৳ —', date:'২২-০৫-২০২৬'},
+  ];
+
+  function showView(name){
+    ['home','auth','dashboard','form','table'].forEach(v=>{
+      document.getElementById('view-'+v).classList.add('hidden');
+    });
+    document.getElementById('view-'+name).classList.remove('hidden');
+    if(name==='table') renderTable(records);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function setAuthTab(tab){
+    const isLogin = tab==='login';
+    document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+    document.getElementById('form-register').classList.toggle('hidden', isLogin);
+
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+
+    tabLogin.classList.toggle('text-cyan-600', isLogin);
+    tabLogin.classList.toggle('border-cyan-500', isLogin);
+    tabLogin.classList.toggle('text-slate-400', !isLogin);
+    tabLogin.classList.toggle('border-transparent', !isLogin);
+
+    tabRegister.classList.toggle('text-cyan-600', !isLogin);
+    tabRegister.classList.toggle('border-cyan-500', !isLogin);
+    tabRegister.classList.toggle('text-slate-400', isLogin);
+    tabRegister.classList.toggle('border-transparent', isLogin);
+  }
+
+  function openForm(type){
+    document.getElementById('f-type').value = type;
+    document.getElementById('form-title').textContent = type;
+    showView('form');
+  }
+
+  function submitDeed(e){
+    e.preventDefault();
+    const id = document.getElementById('f-deedno').value || ('KH-2026-'+String(Math.floor(Math.random()*900+100)));
+    records.unshift({
+      id: id,
+      type: document.getElementById('f-type').value,
+      upazila: document.getElementById('f-upazila').value || '—',
+      mouza: document.getElementById('f-mouza').value || '—',
+      donor: document.getElementById('f-donor').value || '—',
+      grantee: document.getElementById('f-grantee').value || '—',
+      area: (document.getElementById('f-area').value || '—') + ' ' + document.getElementById('f-unit').value,
+      value: document.getElementById('f-value').value ? ('৳ '+document.getElementById('f-value').value) : '৳ —',
+      date: document.getElementById('f-date').value || '—'
+    });
+    e.target.reset();
+    showView('table');
+  }
+
+  function renderTable(list){
+    const tbody = document.getElementById('table-body');
+    const cardList = document.getElementById('card-list');
+    const empty = document.getElementById('empty-state');
+    tbody.innerHTML = '';
+    cardList.innerHTML = '';
+
+    empty.classList.toggle('hidden', list.length!==0);
+
+    list.forEach(r=>{
+      tbody.innerHTML += `
+        <tr class="border-t border-slate-100 hover:bg-cyan-50/40 transition-colors">
+          <td class="px-4 py-3.5 font-mono text-xs text-cyan-600">${r.id}</td>
+          <td class="px-4 py-3.5">${r.type}</td>
+          <td class="px-4 py-3.5">${r.upazila}</td>
+          <td class="px-4 py-3.5">${r.donor}</td>
+          <td class="px-4 py-3.5">${r.grantee}</td>
+          <td class="px-4 py-3.5 font-mono text-xs">${r.area}</td>
+          <td class="px-4 py-3.5 font-mono text-xs">${r.date}</td>
+          <td class="px-4 py-3.5 text-right whitespace-nowrap">
+            <button class="text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:border-cyan-400 hover:text-cyan-600 hover:bg-cyan-50 transition-colors mr-1">দেখুন</button>
+            <button class="text-xs px-3 py-1.5 rounded-full text-red-500 hover:bg-red-50 transition-colors">মুছুন</button>
+          </td>
+        </tr>`;
+
+      cardList.innerHTML += `
+        <div class="bg-white border border-slate-200 shadow-sm rounded-2xl p-4">
+          <div class="flex justify-between items-start">
+            <span class="font-mono text-sm font-semibold text-cyan-600">${r.id}</span>
+            <span class="bg-cyan-50 text-cyan-700 border border-cyan-100 text-xs px-2.5 py-0.5 rounded-full">${r.type}</span>
+          </div>
+          <p class="text-sm mt-2 text-slate-500">${r.upazila} · ${r.mouza}</p>
+          <div class="grid grid-cols-2 gap-1.5 mt-3 text-xs">
+            <p><span class="text-slate-400">দাতা:</span> ${r.donor}</p>
+            <p><span class="text-slate-400">গ্রহীতা:</span> ${r.grantee}</p>
+            <p><span class="text-slate-400">পরিমাণ:</span> ${r.area}</p>
+            <p><span class="text-slate-400">তারিখ:</span> ${r.date}</p>
+          </div>
+          <div class="flex gap-2 mt-3.5">
+            <button class="text-xs px-3 py-2 rounded-xl border border-slate-200 text-slate-700 hover:border-cyan-400 hover:text-cyan-600 hover:bg-cyan-50 transition-colors flex-1">দেখুন</button>
+            <button class="text-xs px-3 py-2 rounded-xl border border-slate-200 text-red-500 hover:bg-red-50 transition-colors flex-1">মুছুন</button>
+          </div>
+        </div>`;
+    });
+  }
+
+  function filterTable(){
+    const q = document.getElementById('search-box').value.trim().toLowerCase();
+    const up = document.getElementById('filter-upazila').value;
+    const ty = document.getElementById('filter-type').value;
+    const filtered = records.filter(r=>{
+      const matchesQ = !q || [r.id,r.donor,r.grantee,r.mouza].some(v=>v.toLowerCase().includes(q));
+      const matchesUp = !up || r.upazila===up;
+      const matchesTy = !ty || r.type===ty;
+      return matchesQ && matchesUp && matchesTy;
+    });
+    renderTable(filtered);
+  }
+</script>
+</body>
+</html>
