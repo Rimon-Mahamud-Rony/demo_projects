@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bangla ⇄ English Number Converter</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .card {
+    background: #1e293b;
+    padding: 32px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  h1 {
+    color: #f1f5f9;
+    font-size: 20px;
+    margin: 0 0 20px;
+    text-align: center;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab-btn:hover {
+    color: #e2e8f0;
+  }
+  .tab-btn.active {
+    background: #38bdf8;
+    color: #ffffff;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  label {
+    display: block;
+    color: #94a3b8;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #f1f5f9;
+    outline: none;
+  }
+  input:focus {
+    border-color: #38bdf8;
+  }
+  .result {
+    margin-top: 20px;
+    padding: 16px;
+    background: #0f172a;
+    border-radius: 8px;
+    border: 1px dashed #334155;
+  }
+  .result span {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .result strong {
+    color: #4ade80;
+    font-size: 22px;
+    letter-spacing: 1px;
+    word-break: break-all;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>বাংলা ⇄ ইংরেজি নাম্বার কনভার্টার</h1>
+
+  <div class="tabs">
+    <button id="tabB2E" class="tab-btn active">বাংলা → English</button>
+    <button id="tabE2B" class="tab-btn">English → বাংলা</button>
+  </div>
+
+  <!-- B2E Panel -->
+  <div id="panelB2E" class="panel active">
+    <label for="inputB2E">ফোন নাম্বার লিখুন (বাংলা সংখ্যায়)</label>
+    <input type="text" id="inputB2E" placeholder="০১৭xxxxxxxx" autocomplete="off">
+
+    <div class="result">
+      <span>ইংরেজি সংখ্যায়:</span>
+      <strong id="outputB2E">—</strong>
+    </div>
+  </div>
+
+  <!-- E2B Panel -->
+  <div id="panelE2B" class="panel">
+    <label for="inputE2B">Phone number in English</label>
+    <input type="text" id="inputE2B" placeholder="017xxxxxxxx" autocomplete="off">
+
+    <div class="result">
+      <span>বাংলা সংখ্যায়:</span>
+      <strong id="outputE2B">—</strong>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banglaDigits = "০১২৩৪৫৬৭৮৯";
+  const englishDigits = "0123456789";
+
+  function convertToEnglish(text) {
+    let result = "";
+    for (const ch of text) {
+      const idx = banglaDigits.indexOf(ch);
+      result += idx !== -1 ? englishDigits[idx] : ch;
+    }
+    return result;
+  }
+
+  function convertToBangla(text) {
+    let result = "";
+    for (const ch of text) {
+      const idx = englishDigits.indexOf(ch);
+      result += idx !== -1 ? banglaDigits[idx] : ch;
+    }
+    return result;
+  }
+
+  // B2E logic
+  const inputB2E = document.getElementById("inputB2E");
+  const outputB2E = document.getElementById("outputB2E");
+  inputB2E.addEventListener("input", () => {
+    const value = inputB2E.value.trim();
+    outputB2E.textContent = value ? convertToEnglish(value) : "—";
+  });
+
+  // E2B logic
+  const inputE2B = document.getElementById("inputE2B");
+  const outputE2B = document.getElementById("outputE2B");
+  inputE2B.addEventListener("input", () => {
+    const value = inputE2B.value.trim();
+    outputE2B.textContent = value ? convertToBangla(value) : "—";
+  });
+
+  // Tab switching
+  const tabB2E = document.getElementById("tabB2E");
+  const tabE2B = document.getElementById("tabE2B");
+  const panelB2E = document.getElementById("panelB2E");
+  const panelE2B = document.getElementById("panelE2B");
+
+  function showB2E() {
+    panelB2E.classList.add("active");
+    panelE2B.classList.remove("active");
+    tabB2E.classList.add("active");
+    tabE2B.classList.remove("active");
+  }
+
+  function showE2B() {
+    panelE2B.classList.add("active");
+    panelB2E.classList.remove("active");
+    tabE2B.classList.add("active");
+    tabB2E.classList.remove("active");
+  }
+
+  tabB2E.addEventListener("click", showB2E);
+  tabE2B.addEventListener("click", showE2B);
+</script>
+
+</body>
+</html>
